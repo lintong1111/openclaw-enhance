@@ -2,172 +2,104 @@
 
 OpenClaw 功能增强包，参考 Claude Code 源码设计。
 
-## 功能模块
-
-### 1. AutoCompact（上下文压缩）
-**位置：** `autocompact/`
-
-对话历史自动压缩，节省 token 使用量。
-
-```javascript
-const { createAutoCompact } = require('./autocompact/autoCompact');
-
-const autoCompact = createAutoCompact({
-  autoCompact: true,
-  preserveRecentMessages: 6
-});
-
-// 每次 turn 结束时调用
-const result = await autoCompact.checkAndCompact(messages, { sessionId });
-```
-
-**阈值：**
-- 8000 tokens → 自动压缩
-- 12000 tokens → 警告
-- 15000 tokens → 需手动压缩
-
----
-
-### 2. Team/Task 协作系统
-**位置：** `team-task/`
-
-多 Agent 协作，支持团队创建、任务分配、消息通信。
-
-```javascript
-const { TeamManager, TaskManager, MessageBus } = require('./team-task');
-
-// 创建团队
-const team = TeamManager.create('project-alpha', 'Building feature X');
-
-// 添加成员
-TeamManager.addMember('project-alpha', 'backend-dev', 'general-purpose');
-
-// 创建任务
-TaskManager.create('Implement login API', 'project-alpha', 'backend-dev');
-
-// 发送消息
-MessageBus.send('backend-dev', 'Login API 完成了');
-```
-
----
-
-### 3. MCP（Model Context Protocol）集成
-**位置：** `mcp/`
-
-将 OpenClaw 作为 MCP Host，暴露工具给外部 MCP Client。
+## 🚀 一键安装
 
 ```bash
-# 启动 MCP Server
-node mcp/server.js
-```
-
-**可用工具：** exec, read, write, glob, grep
-
----
-
-### 4. Skills 增强
-**位置：** `skills/`
-
-增强的 Skill 格式，支持更多字段：
-
-```yaml
----
-name: skill-name
-description: 一句话描述
-allowed-tools:         # 工具权限
-  - web_search
-  - Bash(curl:*)
-when_to_use: |         # 自动触发条件
-  Use when user wants to search.
-  Examples: 'look up X', 'search for Y'
-context: fork           # inline 或 fork
-argument-hint: "<query>"
-aliases:               # 别名
-  - search
-  - find
----
-```
-
----
-
-### 5. Self-Improvement（自我进化）
-**位置：** `self-improvement/`
-
-让 OpenClaw 具备自我学习、记忆和持续改进能力。
-
-**功能：**
-- ✅ **自动记忆** — 记录用户偏好、习惯
-- ✅ **错误追踪** — 自动记录失败和错误
-- ✅ **教训记录** — 记录学习到的经验教训
-- ✅ **功能需求追踪** — 记录想要但未实现的功能
-- ✅ **Hook 自动提醒** — 每次启动时自动提醒反思
-- ✅ **Skill 生成** — 从 learnings 自动创建可复用的 Skill
-
-**快速安装：**
-```bash
-cd self-improvement
-chmod +x install.sh && ./install.sh
-```
-
-**文件结构：**
-```
-self-improvement/
-├── README.md
-├── install.sh
-├── hooks/
-│   └── openclaw/
-│       ├── HOOK.md
-│       ├── handler.js      # 智能提醒 + 上下文注入
-│       └── handler.ts
-└── skills/
-    └── skillify/          # Skill 生成
-        └── SKILL.md
-```
-
-**增强后的工作流程：**
-```
-agent:bootstrap
-    ↓
-handler.js 自动读取 recent learnings
-    ↓
-注入到 bootstrap 上下文
-    ↓
-Agent 看到最近的教训 + 提醒
-    ↓
-如发现高优先级功能需求 → 提示创建 Skill
-```
-
----
-
-## 安装
-
-```bash
-# 克隆仓库
 git clone https://github.com/lintong1111/openclaw-enhance.git
 cd openclaw-enhance
-
-# 查看各模块详细说明
-cat <module>/README.md
+./install.sh
 ```
 
----
+## 🔄 一键更新
 
-## 模块说明
+```bash
+cd openclaw-enhance
+./update.sh
+```
+
+## 📦 模块列表
+
+### 高级功能模块 (advanced/)
 
 | 模块 | 说明 | 状态 |
 |------|------|------|
-| `autocompact/` | 上下文自动压缩 | ✅ 就绪 |
-| `team-task/` | 多 Agent 协作 | ✅ 就绪 |
-| `mcp/` | MCP 服务器 | ✅ 就绪 |
-| `skills/` | Skill 增强格式 | ✅ 就绪 |
-| `self-improvement/` | 自我进化系统 | ✅ 就绪 |
+| `token-budget/` | Token 预算管理 | ✅ |
+| `graceful-shutdown/` | 优雅关闭 | ✅ |
+| `in-process-teammate/` | 进程内协作 | ✅ |
+| `memory-tiers/` | 多层记忆 | ✅ |
+| `read-only-agents/` | 只读Agent | ✅ |
 
----
+### 核心能力 (core-modes/)
 
-## 参考
+| 模块 | 说明 | 状态 |
+|------|------|------|
+| `memory/` | 长期记忆机制 | ✅ |
+| `jarvis/` | 贾维斯主动模式 | ✅ |
+| `daemon/` | 后台守护进程 | ✅ |
 
-- Claude Code 源码泄露分析
-- OpenClaw 官方文档
+### 其他模块
+
+| 模块 | 说明 | 状态 |
+|------|------|------|
+| `autocompact/` | 上下文压缩 | ✅ |
+| `team-task/` | 多Agent协作 | ✅ |
+| `mcp/` | MCP服务器 | ✅ |
+| `skills/` | Skill增强格式 | ✅ |
+| `self-improvement/` | 自我进化 | ✅ |
+
+## 📖 使用方法
+
+### 高级模块安装
+
+```bash
+# 单独安装某个模块
+cd advanced/token-budget
+./install.sh
+
+# 或使用总安装脚本（安装所有高级模块）
+./install.sh
+```
+
+### 代码引用
+
+```javascript
+// Token Budget
+const { TokenBudget } = require('~/.openclaw/workspace/services/token-budget/tokenBudget')
+
+// Graceful Shutdown
+const { ShutdownManager } = require('~/.openclaw/workspace/services/graceful-shutdown/shutdownManager')
+
+// In-Process Teammate
+const { MessageBus } = require('~/.openclaw/workspace/services/in-process-teammate/inProcessTeammate')
+
+// Memory Tiers
+const { MemoryManager } = require('~/.openclaw/workspace/services/memory-tiers/memoryTiers')
+
+// Read-Only Agents
+const { createReadOnlyAgent } = require('~/.openclaw/workspace/services/read-only-agents/readOnlyTools')
+```
+
+## 📝 各模块说明
+
+### Token Budget
+防止任务无限消耗 Token，支持三级预算（Turn/Task/Session）。
+
+### Graceful Shutdown
+优雅关闭，比 kill 更安全，支持状态保存和资源清理。
+
+### In-Process Teammate
+进程内 Teammate，通信更快，支持消息队列和事件驱动。
+
+### Memory Tiers
+多层记忆系统（Session/Team/Agent/Persistent）。
+
+### Read-Only Agents
+只读 Agent，用于调研和分析，防止误操作。
+
+## 更新日志
+
+- **v2** (2026-03-31): 添加一键安装/更新脚本，各模块独立安装脚本
+- **v1** (2026-03-31): 初始版本，5个高级模块 + 核心能力配置
 
 ## License
 
