@@ -1,0 +1,17 @@
+[Unit]
+Description=OpenClaw Gateway Service
+After=network.target
+
+[Service]
+Type=simple
+User=tony
+Environment=NODE_ENV=production
+ExecStart=/home/tony/.npm-global/bin/openclaw gateway start
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=openclaw-gateway
+
+[Install]
+WantedBy=multi-user.target
