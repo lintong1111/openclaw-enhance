@@ -80,12 +80,61 @@ allowed-tools:         # 工具权限
 when_to_use: |         # 自动触发条件
   Use when user wants to search.
   Examples: 'look up X', 'search for Y'
-context: fork          # inline 或 fork
+context: fork           # inline 或 fork
 argument-hint: "<query>"
 aliases:               # 别名
   - search
   - find
 ---
+```
+
+---
+
+### 5. Self-Improvement（自我进化）
+**位置：** `self-improvement/`
+
+让 OpenClaw 具备自我学习、记忆和持续改进能力。
+
+**功能：**
+- ✅ **自动记忆** — 记录用户偏好、习惯
+- ✅ **错误追踪** — 自动记录失败和错误
+- ✅ **教训记录** — 记录学习到的经验教训
+- ✅ **功能需求追踪** — 记录想要但未实现的功能
+- ✅ **Hook 自动提醒** — 每次启动时自动提醒反思
+- ✅ **Skill 生成** — 从 learnings 自动创建可复用的 Skill
+
+**快速安装：**
+```bash
+cd self-improvement
+chmod +x install.sh && ./install.sh
+```
+
+**文件结构：**
+```
+self-improvement/
+├── README.md
+├── install.sh
+├── hooks/
+│   └── openclaw/
+│       ├── HOOK.md
+│       ├── handler.js      # 智能提醒 + 上下文注入
+│       └── handler.ts
+└── skills/
+    └── skillify/          # Skill 生成
+        └── SKILL.md
+```
+
+**增强后的工作流程：**
+```
+agent:bootstrap
+    ↓
+handler.js 自动读取 recent learnings
+    ↓
+注入到 bootstrap 上下文
+    ↓
+Agent 看到最近的教训 + 提醒
+    ↓
+如发现高优先级功能需求 → 提示创建 Skill
 ```
 
 ---
@@ -111,6 +160,7 @@ cat <module>/README.md
 | `team-task/` | 多 Agent 协作 | ✅ 就绪 |
 | `mcp/` | MCP 服务器 | ✅ 就绪 |
 | `skills/` | Skill 增强格式 | ✅ 就绪 |
+| `self-improvement/` | 自我进化系统 | ✅ 就绪 |
 
 ---
 
