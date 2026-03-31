@@ -44,10 +44,10 @@ for module in "${MODULES[@]}"; do
     bash "$SCRIPT_DIR/$module/install.sh"
   else
     mkdir -p ~/.openclaw/workspace/services/$module_name
-    if [ -f "$SCRIPT_DIR/$module"/*.js ]; then
+    if ls "$SCRIPT_DIR/$module"/*.js &>/dev/null; then
       cp "$SCRIPT_DIR/$module"/*.js ~/.openclaw/workspace/services/$module_name/
     fi
-    if [ -f "$SCRIPT_DIR/$module"/*.md ]; then
+    if ls "$SCRIPT_DIR/$module"/*.md &>/dev/null; then
       cp "$SCRIPT_DIR/$module"/*.md ~/.openclaw/workspace/services/$module_name/
     fi
     echo "✅ $module_name 已安装"
