@@ -1,0 +1,97 @@
+# OpenClaw Hook System Configuration
+# ~/.openclaw/hooks.yaml
+
+version: "1.0"
+
+# PreToolUse - 工具调用前触发
+PreToolUse:
+  # 日志记录 - 内置Hook
+  - name: "log-tool-call"
+    source: "builtinHook"
+    enabled: true
+    commands:
+      - type: "command"
+        command: 'echo "[{{session.id}}] Tool: {{tool.name}} Args: {{tool.args}}" >> ~/.openclaw/logs/hooks.log'
+        if: "tool.name == 'exec'"
+
+  # 安全验证 - 用户设置
+  - name: "validate-shell-commands"
+    source: "userSettings"
+    enabled: true
+    commands:
+      - type: "prompt"
+        prompt: "⚠️ 注意：您正在执行 shell 命令，请确认安全性"
+        if: "tool.name == 'exec' && tool.args[0] && tool.args[0].includes('rm')"
+      - type: "command"
+        command: 'echo "DANGEROUS: {{tool.args}}" | wall'
+        if: "tool.args[0] && tool.args[0].includes('rm -rf')"
+
+  # MCP 工具前 - 插件Hook
+  - name: "mcp-tool-logging"
+    source: "pluginHook"
+    enabled: false
+    commands:
+      - type: "http"
+        url: "http://localhost:3000/webhook/tool-call"
+        if: "tool.name.startsWith('mcp_')"
+
+# PostToolUse - 工具调用后触发
+PostToolUse:
+  - name: "log-tool-result"
+    source: "builtinHook"
+    enabled: false
+    commands:
+      - type: "command"
+        command: 'echo "[{{session.id}}] Completed: {{tool.name}}" >> ~/.openclaw/logs/hooks.log'
+
+# SessionStart - 会话启动时触发
+SessionStart:
+  - name: "welcome-message"
+    source: "userSettings"
+    enabled: false
+    commands:
+      - type: "prompt"
+        prompt: "👋 欢迎回来！您上次会话中断于 {{session.lastMessage}}"
+
+  - name: "session-init"
+    source: "builtinHook"
+    enabled: true
+    commands:
+      - type: "command"
+        command: 'echo "[{{session.id}}] Session started at $(date)" >> ~/.openclaw/logs/sessions.log'
+
+# SessionEnd - 会话结束时触发
+SessionEnd:
+  - name: "session-summary"
+    source: "userSettings"
+    enabled: true
+    commands:
+      - type: "http"
+        url: "http://localhost:3000/api/session-end"
+        if: "session.duration > 60"
+
+  - name: "cleanup"
+    source: "builtinHook"
+    enabled: true
+    commands:
+      - type: "command"
+        command: 'echo "[{{session.id}}] Session ended. Duration: {{session.duration}}s, Messages: {{session.messages}}" >> ~/.openclaw/logs/sessions.log'
+
+# Stop - 停止时触发
+Stop:
+  - name: "emergency-stop"
+    source: "policySettings"
+    enabled: true
+    commands:
+      - type: "command"
+        command: 'echo "Emergency stop triggered at $(date)" | tee ~/.openclaw/logs/emergency.log'
+
+# PreToolUse_MCP - MCP工具前触发
+PreToolUse_MCP:
+  - name: "mcp-auth-check"
+    source: "pluginHook"
+    enabled: true
+    commands:
+      - type: "prompt"
+        prompt: "MCP tool {{tool.name}} requires authentication"
+        if: "tool.name.includes('auth')"

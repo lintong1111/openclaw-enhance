@@ -1,0 +1,36 @@
+{
+  "flags": {
+    "TOOL_REGISTRY_V2": {
+      "enabled": false,
+      "description": "新工具注册系统",
+      "rolloutPercentage": 0,
+      "defaultValue": false
+    },
+    "HOOK_SYSTEM_V2": {
+      "enabled": false,
+      "description": "新Hook系统",
+      "rolloutPercentage": 0,
+      "defaultValue": false
+    },
+    "AUTO_COMPACT": {
+      "enabled": false,
+      "description": "自动压缩",
+      "rolloutPercentage": 0,
+      "defaultValue": false
+    },
+    "SKILL_SYSTEM_V2": {
+      "enabled": false,
+      "description": "新Skill系统",
+      "rolloutPercentage": 0,
+      "defaultValue": false
+    },
+    "CACHE_V2": {
+      "enabled": false,
+      "description": "新缓存系统",
+      "rolloutPercentage": 0,
+      "defaultValue": false
+    }
+  },
+  "_comment": "Feature Flag Configuration - Managed by OpenClaw",
+  "_updated": "2026-04-06T20:06:00.000Z"
+}

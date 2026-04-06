@@ -1,0 +1,17 @@
+{
+  "name": "@openclaw/openclaw-master",
+  "version": "1.0.0",
+  "description": "OpenClaw 一站式增强包 - 整合所有增强模块",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "install:all": "pnpm -r install",
+    "test": "pnpm -r test",
+    "example": "cd packages/openclaw-enhance && pnpm example"
+  },
+  "keywords": ["openclaw", "enhance", "jarvis", "monorepo"],
+  "author": "lintong1111",
+  "license": "MIT"
+}
