@@ -51,9 +51,23 @@ else
     echo -e "${YELLOW}警告: 未找到 hooks 目录，跳过${NC}"
 fi
 
+# 复制自我进化工具
+echo ""
+echo "步骤 4: 复制自我进化工具 (FTS5搜索/轻量复盘/经验卡片)..."
+mkdir -p ~/.openclaw/workspace/.ftsi
+mkdir -p ~/.openclaw/workspace/tools
+if [ -d "$SCRIPT_DIR/tools" ]; then
+    cp "$SCRIPT_DIR/tools/fts5_search.py" ~/.openclaw/workspace/tools/
+    cp "$SCRIPT_DIR/tools/lightweight_reflection.py" ~/.openclaw/workspace/tools/
+    cp "$SCRIPT_DIR/tools/experience_card.py" ~/.openclaw/workspace/tools/
+    echo -e "${GREEN}✓ 自我进化工具已复制${NC}"
+else
+    echo -e "${YELLOW}警告: 未找到 tools 目录，跳过${NC}"
+fi
+
 # 启用 Hook
 echo ""
-echo "步骤 4: 启用 Hook..."
+echo "步骤 5: 启用 Hook..."
 if command -v openclaw &> /dev/null; then
     openclaw hooks enable self-improvement 2>/dev/null || echo -e "${YELLOW}注意: Hook 可能已经启用或启用失败，请手动检查${NC}"
     echo -e "${GREEN}✓ Hook 启用完成${NC}"
