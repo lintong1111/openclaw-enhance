@@ -61,6 +61,9 @@ if [ -d "$SCRIPT_DIR/tools" ]; then
     cp "$SCRIPT_DIR/tools/lightweight_reflection.py" ~/.openclaw/workspace/tools/
     cp "$SCRIPT_DIR/tools/experience_card.py" ~/.openclaw/workspace/tools/
     echo -e "${GREEN}✓ 自我进化工具已复制${NC}"
+    # Rebuild FTS5 index (optional, first run will auto-create it)
+    echo ""
+    echo "提示: FTS5索引将在首次运行时自动创建"
 else
     echo -e "${YELLOW}警告: 未找到 tools 目录，跳过${NC}"
 fi
