@@ -52,9 +52,26 @@ if [ -d "$SCRIPT_DIR/tools" ]; then
     cp -n "$SCRIPT_DIR/tools/fts5_search.py" ~/.openclaw/workspace/tools/ 2>/dev/null || true
     cp -n "$SCRIPT_DIR/tools/lightweight_reflection.py" ~/.openclaw/workspace/tools/ 2>/dev/null || true
     cp -n "$SCRIPT_DIR/tools/experience_card.py" ~/.openclaw/workspace/tools/ 2>/dev/null || true
+    cp -n "$SCRIPT_DIR/tools/prompt_inject_scanner.py" ~/.openclaw/workspace/tools/ 2>/dev/null || true
+    cp -n "$SCRIPT_DIR/tools/prompt_inject_scanner.py" ~/.openclaw/workspace/tools/ 2>/dev/null || true
     echo -e "${GREEN}✓ 自我进化工具已复制${NC}"
     echo ''
     echo '提示: FTS5索引将在首次运行时自动创建（也可手动: python3 ~/.openclaw/workspace/tools/fts5_search.py --rebuild）'
+    echo ''
+
+    echo '步骤 4b: 复制 ClawOS 工作流 (29个)...'
+    mkdir -p ~/.openclaw/workspace/tools/workflows
+    if [ -d "$SCRIPT_DIR/workflows" ]; then
+        for wf in "$SCRIPT_DIR/workflows"/*/; do
+            wf_name=$(basename "$wf")
+            mkdir -p "~/.openclaw/workspace/tools/workflows/$wf_name"
+            cp -n "$wf"*.py "~/.openclaw/workspace/tools/workflows/$wf_name/" 2>/dev/null || true
+        done
+        chmod +x ~/.openclaw/workspace/tools/workflows/*/run.py 2>/dev/null || true
+        echo -e "${GREEN}✓ 已安装 29 个 ClawOS 工作流${NC}"
+    else
+        echo -e "${YELLOW}警告: 未找到 workflows 目录，跳过${NC}"
+    fi
 else
     echo -e "${YELLOW}警告: 未找到 tools 目录，跳过${NC}"
 fi
